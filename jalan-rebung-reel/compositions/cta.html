@@ -1,0 +1,35 @@
+<template>
+  <!-- CTA (edit 27.25 – 31.91s, local 0 – 4.66): BERMINAT? -> contact button -> UNIT SANGAT TERHAD stamp. -->
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; font-family: "Montserrat", sans-serif; color: #fff; }
+    #ct-q { position: absolute; left: 0; top: 206px; width: 1080px; text-align: center; font-weight: 900; font-size: 124px;
+      line-height: 1; letter-spacing: -3px; text-shadow: 0 8px 30px rgba(0,0,0,.5); opacity: 0; }
+    #ct-btn { position: absolute; left: 0; top: 378px; width: 1080px; text-align: center; opacity: 0; }
+    #ct-btn span { display: inline-flex; align-items: center; gap: 18px; padding: 26px 46px; border-radius: 999px;
+      background: #ffc93c; color: #0e1116; font-weight: 900; font-size: 52px; line-height: 1;
+      box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+    #ct-btn svg { width: 50px; height: 50px; }
+    #ct-stamp { position: absolute; left: 0; top: 210px; width: 1080px; text-align: center; opacity: 0; }
+    #ct-stamp span { display: inline-block; padding: 18px 36px; border: 7px solid #fff; border-radius: 18px; background: #ff3b3b;
+      font-weight: 900; font-size: 74px; line-height: 1; letter-spacing: 1px; box-shadow: 0 14px 40px rgba(0,0,0,.45); }
+  </style>
+  <div id="root" data-composition-id="cta" data-width="1080" data-height="1920">
+    <div id="ct-q">BERMINAT?</div>
+    <div id="ct-btn"><span>CONTACT SAYA SEKARANG
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0e1116" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></div>
+    <div id="ct-stamp"><span>UNIT SANGAT TERHAD!</span></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#ct-q", { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 0.06);
+    tl.fromTo("#ct-btn", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, 1.05);
+    tl.fromTo("#ct-btn span", { scale: 1 }, { scale: 1.05, duration: 0.32, ease: "sine.inOut", yoyo: true, repeat: 5 }, 1.5);
+    tl.to("#ct-q", { opacity: 0, y: -30, duration: 0.16, ease: "power2.in" }, 3.18);
+    tl.fromTo("#ct-stamp", { opacity: 0, scale: 2.4, rotation: -14 },
+      { opacity: 1, scale: 1, rotation: -4, duration: 0.17, ease: "power4.in" }, 3.2);
+    tl.to("#ct-stamp", { scale: 1.06, duration: 0.06, ease: "power2.out" }, 3.37);
+    tl.to("#ct-stamp", { scale: 1, duration: 0.22, ease: "power2.out" }, 3.43);
+    window.__timelines = window.__timelines || {};
+    window.__timelines["cta"] = tl;
+  </script>
+</template>

@@ -1,0 +1,367 @@
+{
+ "clips": [
+  {
+   "i": 0,
+   "start": 0.0,
+   "dur": 3.8,
+   "src": 13.52,
+   "src_out": 17.32,
+   "zoom": 1.0,
+   "note": "HOOK  Harga bermula dari RM505K net."
+  },
+  {
+   "i": 1,
+   "start": 3.8,
+   "dur": 1.83,
+   "src": 17.96,
+   "src_out": 19.79,
+   "zoom": 1.12,
+   "note": "bulanan bermula serendah"
+  },
+  {
+   "i": 2,
+   "start": 5.63,
+   "dur": 1.6,
+   "src": 20.1,
+   "src_out": 21.7,
+   "zoom": 1.22,
+   "note": "RM2.3K."
+  },
+  {
+   "i": 3,
+   "start": 7.23,
+   "dur": 3.84,
+   "src": 1.96,
+   "src_out": 5.8,
+   "zoom": 1.0,
+   "note": "Sekarang saya berada dekat Jalan Rebung, Bukit Kapah."
+  },
+  {
+   "i": 4,
+   "start": 11.07,
+   "dur": 2.42,
+   "src": 6.24,
+   "src_out": 8.66,
+   "zoom": 1.12,
+   "note": "Belakang saya ni ada teres dua tingkat,"
+  },
+  {
+   "i": 5,
+   "start": 13.49,
+   "dur": 2.75,
+   "src": 10.22,
+   "src_out": 12.97,
+   "zoom": 1.0,
+   "note": "jangka siap Q1 2027."
+  },
+  {
+   "i": 6,
+   "start": 16.24,
+   "dur": 0.88,
+   "src": 22.37,
+   "src_out": 23.25,
+   "zoom": 1.12,
+   "note": "Cashback ada,"
+  },
+  {
+   "i": 7,
+   "start": 17.12,
+   "dur": 0.92,
+   "src": 23.82,
+   "src_out": 24.74,
+   "zoom": 1.0,
+   "note": "kalau nak cashback,"
+  },
+  {
+   "i": 8,
+   "start": 18.04,
+   "dur": 0.82,
+   "src": 25.7,
+   "src_out": 26.52,
+   "zoom": 1.15,
+   "note": "zero deposit."
+  },
+  {
+   "i": 9,
+   "start": 18.86,
+   "dur": 1.19,
+   "src": 28.15,
+   "src_out": 29.34,
+   "zoom": 1.0,
+   "note": "Freehold Malay Reserve,"
+  },
+  {
+   "i": 10,
+   "start": 20.05,
+   "dur": 1.07,
+   "src": 29.9,
+   "src_out": 30.97,
+   "zoom": 1.12,
+   "note": "tanah dia besar ya,"
+  },
+  {
+   "i": 11,
+   "start": 21.12,
+   "dur": 1.07,
+   "src": 31.53,
+   "src_out": 32.6,
+   "zoom": 1.0,
+   "note": "19 darab"
+  },
+  {
+   "i": 12,
+   "start": 22.19,
+   "dur": 1.56,
+   "src": 32.94,
+   "src_out": 34.5,
+   "zoom": 1.12,
+   "note": "108 kaki."
+  },
+  {
+   "i": 13,
+   "start": 23.75,
+   "dur": 1.69,
+   "src": 34.67,
+   "src_out": 36.36,
+   "zoom": 1.0,
+   "note": "Tanah belakang 43 kaki,"
+  },
+  {
+   "i": 14,
+   "start": 25.44,
+   "dur": 1.81,
+   "src": 36.86,
+   "src_out": 38.67,
+   "zoom": 1.12,
+   "note": "4 bilik, 3 bilik air."
+  },
+  {
+   "i": 15,
+   "start": 27.25,
+   "dur": 5.46,
+   "src": 39.24,
+   "src_out": 44.7,
+   "zoom": 1.0,
+   "note": "So kalau berminat, cepat-cepat contact saya sebab unit sangat dah terhad. [thumbs up]"
+  }
+ ],
+ "total": 32.71,
+ "captions": [
+  {
+   "id": "cap0",
+   "text": "Harga bermula dari",
+   "start": 0.06,
+   "end": 1.33,
+   "hl": []
+  },
+  {
+   "id": "cap1",
+   "text": "RM505K NET",
+   "start": 1.33,
+   "end": 3.76,
+   "hl": [
+    "RM505K",
+    "NET"
+   ]
+  },
+  {
+   "id": "cap2",
+   "text": "bulanan bermula serendah",
+   "start": 3.84,
+   "end": 5.57,
+   "hl": []
+  },
+  {
+   "id": "cap3",
+   "text": "RM2.3K",
+   "start": 5.69,
+   "end": 7.17,
+   "hl": [
+    "RM2.3K"
+   ]
+  },
+  {
+   "id": "cap4",
+   "text": "Sekarang saya berada",
+   "start": 7.29,
+   "end": 8.52,
+   "hl": []
+  },
+  {
+   "id": "cap5",
+   "text": "dekat Jalan Rebung,",
+   "start": 8.52,
+   "end": 9.92,
+   "hl": [
+    "Jalan",
+    "Rebung,"
+   ]
+  },
+  {
+   "id": "cap6",
+   "text": "Bukit Kapah.",
+   "start": 10.13,
+   "end": 11.02,
+   "hl": [
+    "Bukit",
+    "Kapah."
+   ]
+  },
+  {
+   "id": "cap7",
+   "text": "Belakang saya ni ada",
+   "start": 11.12,
+   "end": 12.18,
+   "hl": []
+  },
+  {
+   "id": "cap8",
+   "text": "teres dua tingkat,",
+   "start": 12.18,
+   "end": 13.44,
+   "hl": [
+    "teres",
+    "dua",
+    "tingkat,"
+   ]
+  },
+  {
+   "id": "cap9",
+   "text": "jangka siap",
+   "start": 13.55,
+   "end": 14.22,
+   "hl": []
+  },
+  {
+   "id": "cap10",
+   "text": "Q1 2027.",
+   "start": 14.49,
+   "end": 16.18,
+   "hl": [
+    "Q1",
+    "2027."
+   ]
+  },
+  {
+   "id": "cap11",
+   "text": "Cashback ada,",
+   "start": 16.3,
+   "end": 17.06,
+   "hl": [
+    "Cashback"
+   ]
+  },
+  {
+   "id": "cap12",
+   "text": "kalau nak cashback,",
+   "start": 17.18,
+   "end": 17.98,
+   "hl": []
+  },
+  {
+   "id": "cap13",
+   "text": "zero deposit.",
+   "start": 18.1,
+   "end": 18.81,
+   "hl": [
+    "zero",
+    "deposit."
+   ]
+  },
+  {
+   "id": "cap14",
+   "text": "Freehold Malay Reserve,",
+   "start": 18.92,
+   "end": 19.99,
+   "hl": [
+    "Freehold"
+   ]
+  },
+  {
+   "id": "cap15",
+   "text": "tanah dia besar ya,",
+   "start": 20.11,
+   "end": 21.06,
+   "hl": [
+    "besar"
+   ]
+  },
+  {
+   "id": "cap16",
+   "text": "19 darab",
+   "start": 21.18,
+   "end": 22.13,
+   "hl": [
+    "19"
+   ]
+  },
+  {
+   "id": "cap17",
+   "text": "108 kaki.",
+   "start": 22.25,
+   "end": 23.69,
+   "hl": [
+    "108"
+   ]
+  },
+  {
+   "id": "cap18",
+   "text": "Tanah belakang 43 kaki,",
+   "start": 23.81,
+   "end": 25.38,
+   "hl": [
+    "43"
+   ]
+  },
+  {
+   "id": "cap19",
+   "text": "4 bilik,",
+   "start": 25.5,
+   "end": 26.06,
+   "hl": [
+    "4"
+   ]
+  },
+  {
+   "id": "cap20",
+   "text": "3 bilik air.",
+   "start": 26.45,
+   "end": 27.19,
+   "hl": [
+    "3"
+   ]
+  },
+  {
+   "id": "cap21",
+   "text": "So kalau berminat,",
+   "start": 27.31,
+   "end": 28.16,
+   "hl": []
+  },
+  {
+   "id": "cap22",
+   "text": "cepat-cepat contact saya",
+   "start": 28.16,
+   "end": 29.32,
+   "hl": [
+    "contact"
+   ]
+  },
+  {
+   "id": "cap23",
+   "text": "sebab unit",
+   "start": 29.5,
+   "end": 30.19,
+   "hl": []
+  },
+  {
+   "id": "cap24",
+   "text": "sangat dah terhad.",
+   "start": 30.4,
+   "end": 31.32,
+   "hl": [
+    "terhad."
+   ]
+  }
+ ]
+}

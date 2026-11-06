@@ -1,0 +1,63 @@
+<template>
+  <!-- LOKASI (edit 7.23 – 16.24s, local 0 – 9.01): pin card, then the house + completion timeline. -->
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; font-family: "Montserrat", sans-serif; color: #fff; }
+    #root .glass { position: absolute; background: rgba(14,17,22,.80); border: 2px solid rgba(255,255,255,.14);
+      border-radius: 34px; box-shadow: 0 18px 50px rgba(0,0,0,.35); }
+    #lk-card { left: 70px; top: 200px; width: 940px; height: 300px; opacity: 0; }
+    #lk-pin { position: absolute; left: 48px; top: 64px; width: 150px; height: 170px; }
+    #lk-l1 { position: absolute; left: 228px; top: 70px; font-weight: 900; font-size: 80px; line-height: 1; letter-spacing: -1px; opacity: 0; }
+    #lk-l2 { position: absolute; left: 232px; top: 168px; font-weight: 800; font-size: 56px; line-height: 1; color: #ffc93c; opacity: 0; }
+
+    #lk-house { left: 70px; top: 196px; width: 940px; height: 170px; opacity: 0; }
+    #lk-house svg { position: absolute; left: 40px; top: 26px; width: 118px; height: 118px; }
+    #lk-house div { position: absolute; left: 186px; top: 47px; font-weight: 900; font-size: 74px; line-height: 1; letter-spacing: -1px; }
+    #lk-done { left: 70px; top: 384px; width: 940px; height: 150px; opacity: 0; }
+    #lk-dl { position: absolute; left: 40px; top: 30px; font-weight: 800; font-size: 30px; letter-spacing: 2px; color: rgba(255,255,255,.75); }
+    #lk-track { position: absolute; left: 44px; top: 96px; width: 470px; height: 10px; border-radius: 5px; background: rgba(255,255,255,.18); }
+    #lk-fill { position: absolute; left: 0; top: 0; width: 470px; height: 10px; border-radius: 5px; background: #ffc93c; transform-origin: 0 50%; }
+    #lk-dot0, #lk-dot1 { position: absolute; top: -9px; width: 28px; height: 28px; border-radius: 50%; background: #ffc93c; border: 5px solid #0e1116; }
+    #lk-dot0 { left: -12px; }
+    #lk-dot1 { left: 456px; }
+    #lk-q { position: absolute; left: 560px; top: 28px; padding: 10px 26px; border-radius: 22px; background: #ffc93c;
+      color: #0e1116; font-weight: 900; font-size: 70px; line-height: 1.1; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="lokasi" data-width="1080" data-height="1920">
+    <div id="lk-card" class="glass">
+      <svg id="lk-pin" viewBox="0 0 24 28"><path fill="#ffc93c" d="M12 1a9 9 0 0 0-9 9c0 6.6 9 17 9 17s9-10.4 9-17a9 9 0 0 0-9-9z"/><circle cx="12" cy="10" r="3.6" fill="#0e1116"/></svg>
+      <div id="lk-l1">JALAN REBUNG</div>
+      <div id="lk-l2">Bukit Kapah</div>
+    </div>
+
+    <div id="lk-house" class="glass">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#ffc93c" stroke-width="3" stroke-linejoin="round">
+        <path d="M6 22 24 7l18 15"/><path d="M10 19v24h28V19"/><path d="M10 31h28"/>
+        <rect x="15" y="22" width="7" height="6"/><rect x="26" y="22" width="7" height="6"/><path d="M21 43v-8h6v8"/>
+      </svg>
+      <div>TERES 2 TINGKAT</div>
+    </div>
+    <div id="lk-done" class="glass">
+      <div id="lk-dl">JANGKA SIAP</div>
+      <div id="lk-track"><div id="lk-fill"></div><div id="lk-dot0"></div><div id="lk-dot1"></div></div>
+      <div id="lk-q">Q1 2027</div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#lk-card", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.04);
+    tl.fromTo("#lk-pin", { y: -230, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "bounce.out" }, 0.12);
+    tl.fromTo("#lk-l1", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 0.5);
+    tl.fromTo("#lk-l2", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 2.9);
+    tl.to("#lk-card", { opacity: 0, y: -40, duration: 0.2, ease: "power2.in" }, 3.66);
+
+    tl.fromTo("#lk-house", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.8)" }, 4.95);
+    tl.fromTo("#lk-done", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 6.3);
+    tl.fromTo("#lk-fill", { scaleX: 0 }, { scaleX: 1, duration: 0.95, ease: "power2.inOut" }, 6.42);
+    tl.fromTo("#lk-dot1", { scale: 0.4 }, { scale: 1.25, duration: 0.12, ease: "power2.out" }, 7.37);
+    tl.to("#lk-dot1", { scale: 1, duration: 0.2, ease: "power2.out" }, 7.49);
+    tl.fromTo("#lk-q", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.32, ease: "back.out(3)" }, 7.37);
+    tl.to(["#lk-house", "#lk-done"], { opacity: 0, y: -40, duration: 0.2, ease: "power2.in", stagger: 0.04 }, 8.74);
+    window.__timelines = window.__timelines || {};
+    window.__timelines["lokasi"] = tl;
+  </script>
+</template>

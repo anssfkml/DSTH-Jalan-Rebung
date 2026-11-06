@@ -1,0 +1,43 @@
+<template>
+  <!-- TAWARAN (edit 16.24 – 21.12s, local 0 – 4.88): cashback + zero deposit chips, then FREEHOLD / Malay Reserve. -->
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; font-family: "Montserrat", sans-serif; color: #fff; }
+    #root .chip { position: absolute; left: 0; width: 1080px; text-align: center; opacity: 0; }
+    #root .chip span { display: inline-flex; align-items: center; gap: 22px; padding: 18px 40px 18px 24px; border-radius: 999px;
+      background: rgba(14,17,22,.82); border: 2px solid rgba(255,255,255,.14); box-shadow: 0 18px 50px rgba(0,0,0,.35);
+      font-weight: 900; font-size: 70px; line-height: 1; letter-spacing: -1px; }
+    #root .chip svg { width: 78px; height: 78px; flex: none; }
+    #tw-c1 { top: 214px; }
+    #tw-c2 { top: 364px; }
+    #tw-c2 span { background: #ffc93c; color: #0e1116; border-color: #ffc93c; }
+
+    #tw-fh { position: absolute; left: 0; top: 214px; width: 1080px; text-align: center; font-weight: 900; font-size: 140px;
+      line-height: 1; letter-spacing: -3px; color: #ffc93c; text-shadow: 0 8px 30px rgba(0,0,0,.5); opacity: 0; }
+    #tw-mr { position: absolute; left: 0; top: 384px; width: 1080px; text-align: center; opacity: 0; }
+    #tw-mr span { display: inline-block; padding: 16px 36px; border-radius: 20px; background: rgba(14,17,22,.82);
+      border: 2px solid rgba(255,255,255,.14); font-weight: 800; font-size: 58px; line-height: 1; letter-spacing: 1px; }
+  </style>
+  <div id="root" data-composition-id="tawaran" data-width="1080" data-height="1920">
+    <div id="tw-c1" class="chip"><span>
+      <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#22c55e"/><path d="M11 20.5l6 6 12-13" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      CASHBACK</span></div>
+    <div id="tw-c2" class="chip"><span>
+      <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#0e1116"/><path d="M11 20.5l6 6 12-13" fill="none" stroke="#ffc93c" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      ZERO DEPOSIT</span></div>
+
+    <div id="tw-fh">FREEHOLD</div>
+    <div id="tw-mr"><span>MALAY RESERVE</span></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#tw-c1", { opacity: 0, x: -80, scale: 0.9 }, { opacity: 1, x: 0, scale: 1, duration: 0.32, ease: "back.out(2)" }, 0.08);
+    tl.fromTo("#tw-c2", { opacity: 0, x: 80, scale: 0.9 }, { opacity: 1, x: 0, scale: 1, duration: 0.32, ease: "back.out(2)" }, 1.88);
+    tl.to(["#tw-c1", "#tw-c2"], { opacity: 0, y: -40, duration: 0.2, ease: "power2.in", stagger: 0.04 }, 2.46);
+
+    tl.fromTo("#tw-fh", { opacity: 0, scale: 1.35 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 2.68);
+    tl.fromTo("#tw-mr", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, 2.98);
+    tl.to(["#tw-fh", "#tw-mr"], { opacity: 0, y: -40, duration: 0.18, ease: "power2.in", stagger: 0.03 }, 4.64);
+    window.__timelines = window.__timelines || {};
+    window.__timelines["tawaran"] = tl;
+  </script>
+</template>

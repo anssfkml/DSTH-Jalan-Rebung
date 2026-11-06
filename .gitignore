@@ -1,0 +1,8 @@
+# Raw camera file (87 MB) and working files stay local
+source/
+scratch/
+preview/
+**/.hyperframes/
+node_modules/
+renders/
+*.mov

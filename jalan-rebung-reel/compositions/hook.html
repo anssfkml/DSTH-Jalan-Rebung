@@ -1,0 +1,73 @@
+<template>
+  <!-- HOOK (0 – 7.23s): price on screen from frame 0, NET stamp on "net", monthly counter lands on "RM2.3K". -->
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; font-family: "Montserrat", sans-serif; color: #fff; }
+    #root .grp { position: absolute; left: 0; top: 0; width: 1080px; height: 700px; }
+    #hk-chip { position: absolute; left: 0; top: 196px; width: 1080px; text-align: center; }
+    #hk-chip span { display: inline-flex; align-items: center; gap: 12px; padding: 14px 30px; border-radius: 999px;
+      background: #ffc93c; color: #0e1116; font-weight: 800; font-size: 34px; letter-spacing: 1px; }
+    #hk-chip svg { width: 30px; height: 30px; }
+    #hk-title { position: absolute; left: 0; top: 270px; width: 1080px; text-align: center; font-weight: 900;
+      font-size: 96px; line-height: 1; letter-spacing: -1px; text-shadow: 0 6px 24px rgba(0,0,0,.5); }
+    #hk-price { position: absolute; left: 0; top: 385px; width: 1080px; text-align: center; white-space: nowrap; }
+    #hk-from { display: inline-block; font-weight: 700; font-size: 46px; margin-right: 14px; vertical-align: 26px; }
+    #hk-num { display: inline-block; font-weight: 900; font-size: 168px; line-height: 1; color: #ffc93c;
+      letter-spacing: -4px; text-shadow: 0 8px 30px rgba(0,0,0,.45); transform-origin: 50% 60%; }
+    #hk-net { position: absolute; left: 790px; top: 512px; padding: 8px 22px; border: 6px solid #fff; border-radius: 14px;
+      background: #ff3b3b; color: #fff; font-weight: 900; font-size: 52px; line-height: 1; letter-spacing: 2px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4); opacity: 0; }
+
+    #hk-label { position: absolute; left: 0; top: 232px; width: 1080px; text-align: center; font-weight: 800;
+      font-size: 50px; letter-spacing: 1px; text-shadow: 0 4px 18px rgba(0,0,0,.5); opacity: 0; }
+    #hk-month { position: absolute; left: 0; top: 312px; width: 1080px; text-align: center; white-space: nowrap; opacity: 0;
+      font-weight: 900; font-size: 180px; line-height: 1; color: #ffc93c; letter-spacing: -5px;
+      text-shadow: 0 8px 30px rgba(0,0,0,.45); }
+    #hk-month .reel { display: inline-block; height: 1em; overflow: hidden; vertical-align: top; }
+    #hk-month .reel > span { display: block; }
+    #hk-month .reel i { display: block; font-style: normal; height: 1em; }
+    #hk-month small { font-size: 54px; color: #fff; letter-spacing: 0; vertical-align: 24px; margin-left: 10px; }
+    #hk-mwrap { display: inline-block; transform-origin: 50% 60%; }
+  </style>
+  <div id="root" data-composition-id="hook" data-width="1080" data-height="1920">
+    <div id="hk-a" class="grp">
+      <div id="hk-chip"><span>
+        <svg viewBox="0 0 24 24" fill="#0e1116"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+        JALAN REBUNG · BUKIT KAPAH</span></div>
+      <div id="hk-title">TERES 2 TINGKAT</div>
+      <div id="hk-price"><span id="hk-from">dari</span><span id="hk-num">RM505K</span></div>
+      <div id="hk-net" data-layout-allow-overlap>NET</div>
+    </div>
+    <div id="hk-b" class="grp">
+      <div id="hk-label">BULANAN BERMULA SERENDAH</div>
+      <div id="hk-month"><span id="hk-mwrap">RM<span class="reel"><span id="hk-r1"><i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i><i>0</i><i>1</i><i>2</i></span></span>.<span class="reel"><span id="hk-r2"><i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i><i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i><i>0</i><i>1</i><i>2</i><i>3</i></span></span>K<small>/bulan</small></span></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Frame 0 already reads: settle-in motion only, never from invisible.
+    tl.fromTo("#hk-chip", { y: -12 }, { y: 0, duration: 0.5, ease: "power3.out" }, 0);
+    tl.fromTo("#hk-title", { scale: 1.08 }, { scale: 1, duration: 0.6, ease: "power3.out" }, 0);
+    tl.fromTo("#hk-price", { y: 16 }, { y: 0, duration: 0.6, ease: "power3.out" }, 0);
+    // "RM505K" said: punch.
+    tl.fromTo("#hk-num", { scale: 1 }, { scale: 1.14, duration: 0.09, ease: "power2.out" }, 1.4);
+    tl.to("#hk-num", { scale: 1, duration: 0.35, ease: "back.out(3)" }, 1.49);
+    // "net": stamp.
+    tl.fromTo("#hk-net", { opacity: 0, scale: 2.6, rotation: -22 },
+      { opacity: 1, scale: 1, rotation: -9, duration: 0.16, ease: "power4.in" }, 3.32);
+    tl.to("#hk-net", { scale: 1.08, duration: 0.06, ease: "power2.out" }, 3.48);
+    tl.to("#hk-net", { scale: 1, duration: 0.2, ease: "power2.out" }, 3.54);
+    tl.to("#hk-a", { opacity: 0, y: -50, duration: 0.16, ease: "power2.in" }, 3.76);
+    tl.set("#hk-a", { visibility: "hidden" }, 3.93);
+
+    // Monthly: label on "bulanan", reels roll and land on "RM2.3K".
+    tl.fromTo("#hk-label", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 3.9);
+    tl.fromTo("#hk-month", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 3.92);
+    tl.fromTo("#hk-r1", { yPercent: 0 }, { yPercent: -100 * 12 / 13, duration: 1.75, ease: "power3.inOut" }, 3.94);
+    tl.fromTo("#hk-r2", { yPercent: 0 }, { yPercent: -100 * 23 / 24, duration: 1.75, ease: "power3.inOut" }, 3.94);
+    tl.fromTo("#hk-mwrap", { scale: 1 }, { scale: 1.16, duration: 0.08, ease: "power2.out" }, 5.69);
+    tl.to("#hk-mwrap", { scale: 1, duration: 0.4, ease: "back.out(3)" }, 5.77);
+    tl.to(["#hk-label", "#hk-month"], { opacity: 0, y: -40, duration: 0.18, ease: "power2.in" }, 7.02);
+    window.__timelines = window.__timelines || {};
+    window.__timelines["hook"] = tl;
+  </script>
+</template>

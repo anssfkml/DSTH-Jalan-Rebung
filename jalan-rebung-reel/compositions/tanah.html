@@ -1,0 +1,78 @@
+<template>
+  <!-- TANAH (edit 21.12 – 27.25s, local 0 – 6.13): lot outline drawn to scale (19 x 108 ft), rear land chip, rooms. -->
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; font-family: "Montserrat", sans-serif; color: #fff; }
+    #tn-lab { position: absolute; left: 0; top: 198px; width: 1080px; text-align: center; font-weight: 800; font-size: 34px;
+      letter-spacing: 4px; color: #ffc93c; text-shadow: 0 3px 12px rgba(0,0,0,.6); opacity: 0; }
+    /* 108 ft -> 720 px, 19 ft -> 127 px */
+    #tn-lot { position: absolute; left: 180px; top: 256px; width: 720px; height: 127px; overflow: visible; }
+    #tn-txt { position: absolute; left: 180px; top: 256px; width: 720px; height: 127px; display: flex; align-items: center;
+      justify-content: center; font-weight: 900; font-size: 74px; line-height: 1; letter-spacing: -1px; white-space: nowrap;
+      text-shadow: 0 4px 14px rgba(0,0,0,.55); }
+    #tn-a, #tn-b { opacity: 0; }
+    #tn-dim { position: absolute; left: 180px; top: 398px; width: 720px; height: 30px; opacity: 0; }
+    #tn-dim i { position: absolute; top: 14px; left: 0; width: 720px; height: 4px; background: rgba(255,255,255,.85); transform-origin: 50% 50%; }
+    #tn-dim b { position: absolute; top: 2px; width: 4px; height: 28px; background: rgba(255,255,255,.85); }
+    #tn-back { position: absolute; left: 0; top: 452px; width: 1080px; text-align: center; opacity: 0; }
+    #tn-back span { display: inline-block; padding: 14px 32px; border-radius: 999px; background: #ffc93c; color: #0e1116;
+      font-weight: 900; font-size: 46px; line-height: 1; }
+
+    #root .tile { position: absolute; top: 206px; width: 420px; height: 320px; border-radius: 34px; text-align: center;
+      background: rgba(14,17,22,.82); border: 2px solid rgba(255,255,255,.14); box-shadow: 0 18px 50px rgba(0,0,0,.35); opacity: 0; }
+    #tn-t1 { left: 100px; }
+    #tn-t2 { left: 560px; }
+    #root .tile svg { width: 110px; height: 110px; margin-top: 30px; }
+    #root .tile .n { font-weight: 900; font-size: 92px; line-height: 1; color: #ffc93c; margin-top: 4px; }
+    #root .tile .n small { font-size: 46px; color: #fff; margin-left: 10px; letter-spacing: 0; }
+  </style>
+  <div id="root" data-composition-id="tanah" data-width="1080" data-height="1920">
+    <div id="tn-a">
+      <div id="tn-lab">KELUASAN TANAH</div>
+      <svg id="tn-lot" viewBox="0 0 720 127" data-layout-allow-overflow>
+        <defs><pattern id="tn-hatch" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <rect width="18" height="18" fill="rgba(255,201,60,.16)"/><rect width="5" height="18" fill="rgba(255,201,60,.28)"/></pattern></defs>
+        <rect id="tn-fill" x="3" y="3" width="714" height="121" rx="6" fill="url(#tn-hatch)" opacity="0"/>
+        <rect id="tn-edge" x="3" y="3" width="714" height="121" rx="6" fill="rgba(14,17,22,.55)" stroke="#ffc93c" stroke-width="6"
+          stroke-dasharray="1700" stroke-dashoffset="1700"/>
+      </svg>
+      <div id="tn-txt"><span id="tn-19">19'</span>&nbsp;<span id="tn-x">× 108'</span></div>
+      <div id="tn-dim"><i></i><b style="left:0"></b><b style="left:716px"></b></div>
+      <div id="tn-back"><span>+ TANAH BELAKANG 43 KAKI</span></div>
+    </div>
+    <div id="tn-b">
+      <div id="tn-t1" class="tile">
+        <svg viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 38V12"/><path d="M5 30h38v8"/><path d="M5 30v-7h38v7"/><rect x="9" y="16" width="11" height="7" rx="2"/></svg>
+        <div class="n">4<small>BILIK</small></div>
+      </div>
+      <div id="tn-t2" class="tile">
+        <svg viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 24h40v6a9 9 0 0 1-9 9H13a9 9 0 0 1-9-9z"/><path d="M10 24V10a4 4 0 0 1 8 0"/><path d="M14 39l-2 4M34 39l2 4"/></svg>
+        <div class="n">3<small>BILIK AIR</small></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#tn-a", { opacity: 0 }, { opacity: 1, duration: 0.15, ease: "none" }, 0.0);
+    tl.fromTo("#tn-lab", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.02);
+    tl.fromTo("#tn-edge", { strokeDashoffset: 1700 }, { strokeDashoffset: 0, duration: 0.7, ease: "power2.inOut" }, 0.05);
+    tl.fromTo("#tn-fill", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, 0.6);
+    // "19" said
+    tl.fromTo("#tn-19", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, 0.08);
+    // "108 kaki" said
+    tl.fromTo("#tn-x", { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 1.18);
+    tl.fromTo("#tn-dim", { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "none" }, 1.18);
+    tl.fromTo("#tn-dim i", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.out" }, 1.18);
+    // "tanah belakang 43 kaki"
+    tl.fromTo("#tn-back", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.6)" }, 2.69);
+    tl.to("#tn-a", { opacity: 0, y: -40, duration: 0.2, ease: "power2.in" }, 4.14);
+
+    tl.fromTo("#tn-b", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 4.36);
+    tl.fromTo("#tn-t1", { opacity: 0, scale: 0.7, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(2)" }, 4.38);
+    tl.fromTo("#tn-t2", { opacity: 0, scale: 0.7, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(2)" }, 5.33);
+    tl.to(["#tn-t1", "#tn-t2"], { opacity: 0, y: -40, duration: 0.18, ease: "power2.in", stagger: 0.03 }, 5.9);
+    window.__timelines = window.__timelines || {};
+    window.__timelines["tanah"] = tl;
+  </script>
+</template>
