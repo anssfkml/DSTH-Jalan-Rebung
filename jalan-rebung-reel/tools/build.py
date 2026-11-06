@@ -8,7 +8,11 @@ import json, os, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Look: Natural Portrait (skin-soft) + a very light bloom, written by `hyperframes media-treatment`
 # and kept in tools/grade.json. Face-only retouch is baked into assets/footage.mp4 by tools/beauty.py.
-GRADE = html.escape(json.dumps(json.load(open(os.path.join(ROOT, "tools", "grade.json"))), separators=(",", ":")), quote=True)
+_grade = json.load(open(os.path.join(ROOT, "tools", "grade.json")))
+GRADE = html.escape(json.dumps(_grade, separators=(",", ":")), quote=True)
+# Background plate: same colour, no bloom (bloom on the bright sky washes the houses out).
+_grade_bg = json.loads(json.dumps(_grade)); _grade_bg["effects"]["bloom"] = 0
+GRADE_BG = html.escape(json.dumps(_grade_bg, separators=(",", ":")), quote=True)
 d = json.load(open(os.path.join(ROOT, "tools", "edit-timeline.json")))
 clips, TOTAL, caps = d["clips"], d["total"], d["captions"]
 
@@ -59,15 +63,24 @@ def f(x):
 
 
 def build_index():
-    vids = []
+    # Green-screen layout: the presenter is a cutout (assets/subject.webm, matte from
+    # `hyperframes remove-background` cleaned by tools/refine_alpha.py) over a separate
+    # rear-camera take of the site (assets/background.mp4). The voice comes from the front
+    # camera as its own audio clips, cut exactly like the picture.
+    vids, voice = [], []
     for c in clips:
         n = c["i"] + 1
         vids.append(
-            f'        <video id="v{n:02d}" class="clip" src="assets/footage.mp4" playsinline data-has-audio="true"\n'
+            f'        <video id="v{n:02d}" class="clip" src="assets/subject.webm" muted playsinline\n'
             f'          data-start="{f(c["start"])}" data-duration="{f(c["dur"])}" data-media-start="{f(c["src"])}"\n'
-            f'          data-fade-in="0.02" data-fade-out="0.03" data-track-index="0"\n'
+            f'          data-track-index="1" data-layout-allow-occlusion\n'
             f'          data-color-grading="{GRADE}"\n'
             f'          style="z-index:{n}; transform: scale({c["zoom"]})"></video>  <!-- {html.escape(c["note"])} -->'
+        )
+        voice.append(
+            f'      <audio id="vo{n:02d}" class="clip" src="assets/voice.m4a" data-start="{f(c["start"])}"'
+            f' data-duration="{f(c["dur"])}" data-media-start="{f(c["src"])}" data-fade-in="0.02" data-fade-out="0.03"'
+            f' data-volume="1" data-track-index="2"></audio>'
         )
     hosts = []
     for k, (sid, a, b) in enumerate(SCENES):
@@ -98,6 +111,8 @@ def build_index():
       body {{ font-family: "Montserrat", sans-serif; }}
       #bump, #cam {{ position: absolute; inset: 0; transform-origin: 50% 30%; }}
       #bump {{ overflow: hidden; }}
+      #bgwrap {{ position: absolute; inset: 0; overflow: hidden; transform-origin: 50% 4%; }}
+      #bg {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
       #cam video {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover;
         transform-origin: 50% 0%; }}
       /* Legibility scrim behind the top text band (cards + captions). */
@@ -109,9 +124,17 @@ def build_index():
     <div id="root" data-composition-id="main" data-start="0" data-duration="{f(TOTAL)}" data-width="1080" data-height="1920">
       <!-- A-roll: {len(clips)} cuts from one take. Pauses, "Okay guys", "Err..." and filler "So" removed;
            the price lines are moved to the front as the hook. Alternate zooms hide the jump cuts. -->
+      <div id="bgwrap" data-layout-allow-overflow>
+        <video id="bg" class="clip" src="assets/background.mp4" muted playsinline data-start="0"
+          data-duration="{f(TOTAL)}" data-media-start="0" data-track-index="0"
+          data-color-grading="{GRADE_BG}" style="z-index:0"></video>
+      </div>
       <div id="bump"><div id="cam" data-layout-allow-overflow>
 {chr(10).join(vids)}
       </div></div>
+
+      <!-- Voice (front camera), cut with the picture -->
+{chr(10).join(voice)}
       <div id="scrim" data-layout-ignore></div>
 
 {chr(10).join(hosts)}
@@ -127,6 +150,11 @@ def build_index():
     <script>
       const tl = gsap.timeline({{ paused: true }});
       // Hook: slow push-in while the price is said, a small bump on the price and on the NET stamp.
+      // Background: one slow push across the whole film, for depth behind the cutout.
+      // Zoomed into the upper part of the rear-camera plate (the houses); the hand gestures in
+      // that take sit in its lower half and fall outside the frame.
+      tl.set("#bgwrap", {{ scale: 1.55 }}, 0);
+      tl.to("#bgwrap", {{ scale: 1.63, duration: {f(TOTAL)}, ease: "none" }}, 0);
       tl.set("#cam", {{ scale: 1 }}, 0);
       tl.to("#cam", {{ scale: 1.06, duration: 3.8, ease: "none" }}, 0);
       tl.set("#cam", {{ scale: 1 }}, 3.8);

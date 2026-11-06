@@ -43,6 +43,13 @@ Sumber: satu take selfie 44.8s (iPhone, potret). Hasil suntingan: **32.7s**.
   (`tools/grade.json`). Bloom kuat ditolak sebab langit jadi putih berkabus dan rumah hilang detail.
 - Kekuatan boleh diubah di atas `tools/beauty.py` (`SMOOTH`, `GLOW`, `TEETH_YELLOW`, `TEETH_EVEN`).
 
+## Greenscreen (latar diganti)
+- Latar: rakaman kamera belakang berasingan (`assets/background.mp4`, dipotong 0.5–34s, tanpa audio),
+  di-zoom ke bahagian rumah supaya tangan dalam rakaman itu terkeluar dari frame, dengan push perlahan.
+- Awak: `npx hyperframes remove-background` → dibersihkan oleh `tools/refine_alpha.py` (buang paip merah
+  dan bayang rumah, kekalkan tangan yang terpisah) → `assets/subject.webm` (VP9 + alpha).
+- Suara: dari kamera depan (`assets/voice.m4a`), dipotong sama seperti gambar.
+
 Zoom berselang (1.0 / 1.12 / 1.22) pada setiap potongan untuk sembunyikan jump cut.
 Kesan bunyi (whoosh, pop, click, impact) dari pustaka Pixabay yang dibundel — lihat `assets/sfx/CREDITS.md`.
 
