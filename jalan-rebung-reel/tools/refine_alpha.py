@@ -50,7 +50,12 @@ def refine(rgba):
     zone[(keep == 0) & red.astype(bool)] = 0
     zone = cv2.GaussianBlur(zone.astype(np.float32), (0, 0), 4)
     out = rgba.copy()
-    out[..., 3] = np.clip(a.astype(np.float32) * np.clip(zone, 0, 1), 0, 255).astype(np.uint8)
+    alpha = np.clip(a.astype(np.float32) * np.clip(zone, 0, 1), 0, 255)
+    # semi-transparent pink/red fringe (pipe ghosts next to a hand); lips are fully opaque and stay
+    red_any = ((hsv[..., 0] <= 4) | (hsv[..., 0] >= 158)) & (hsv[..., 1] > 80) & (a < 200)
+    red_any = cv2.dilate(red_any.astype(np.uint8), np.ones((5, 5), np.uint8)) > 0
+    alpha[red_any & (a < 230)] = 0
+    out[..., 3] = alpha.astype(np.uint8)
     return out
 
 
@@ -65,7 +70,7 @@ def main():
     wr = None
     if not want:
         wr = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}",
-                               "-r", "30", "-i", "-", "-c:v", "libvpx-vp9", "-pix_fmt", "yuva420p", "-crf", "18",
+                               "-r", "30", "-i", "-", "-c:v", "libvpx-vp9", "-pix_fmt", "yuva420p", "-crf", "30",
                                "-b:v", "0", "-g", "15", "-auto-alt-ref", "0", "-row-mt", "1", "-cpu-used", "4",
                                "-deadline", "good", "-metadata:s:v:0", "alpha_mode=1", a.out], stdin=subprocess.PIPE)
     n = 0

@@ -44,8 +44,10 @@ Sumber: satu take selfie 44.8s (iPhone, potret). Hasil suntingan: **32.7s**.
 - Kekuatan boleh diubah di atas `tools/beauty.py` (`SMOOTH`, `GLOW`, `TEETH_YELLOW`, `TEETH_EVEN`).
 
 ## Greenscreen (latar diganti)
-- Latar: rakaman kamera belakang berasingan (`assets/background.mp4`, dipotong 0.5–34s, tanpa audio),
-  di-zoom ke bahagian rumah supaya tangan dalam rakaman itu terkeluar dari frame, dengan push perlahan.
+- Latar: rakaman kamera belakang berasingan (`assets/background.mp4` = bahagian 20.8–46s, tanpa audio),
+  dimainkan 0.77x. Zoom 2.1x (titik 15% dari atas) dipilih secara automatik: bumbung di belakang kepala,
+  dan tangan dalam rakaman itu sama ada di luar frame atau tersorok di belakang badan awak.
+- Saiz awak: 80% (berlabuh di bawah), tepi kiri/kanan dilembutkan.
 - Awak: `npx hyperframes remove-background` → dibersihkan oleh `tools/refine_alpha.py` (buang paip merah
   dan bayang rumah, kekalkan tangan yang terpisah) → `assets/subject.webm` (VP9 + alpha).
 - Suara: dari kamera depan (`assets/voice.m4a`), dipotong sama seperti gambar.

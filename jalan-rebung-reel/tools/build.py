@@ -24,7 +24,9 @@ SCENES = [
     ("tanah", clips[11]["start"], clips[15]["start"]),
     ("cta", clips[15]["start"], TOTAL),
 ]
-CAPTIONS_FROM = clips[3]["start"]  # hook cards already show the spoken price lines
+CAPTIONS_FROM = clips[3]["start"]
+SUBJECT_SCALE = 0.8   # presenter size over the background (anchored to the bottom edge)
+BG_RATE = 0.77        # background plate speed: 32.7 s of film from its 25.2 s hand-free-at-the-top window  # hook cards already show the spoken price lines
 
 # Sound effects: (visual event time, file, volume). Start = event + 1 frame - file peak.
 PEAK = {"pop": 0.12, "whoosh": 0.162, "whoosh-short": 0.162, "click-soft": 0.073,
@@ -75,7 +77,7 @@ def build_index():
             f'          data-start="{f(c["start"])}" data-duration="{f(c["dur"])}" data-media-start="{f(c["src"])}"\n'
             f'          data-track-index="1" data-layout-allow-occlusion\n'
             f'          data-color-grading="{GRADE}"\n'
-            f'          style="z-index:{n}; transform: scale({c["zoom"]})"></video>  <!-- {html.escape(c["note"])} -->'
+            f'          style="z-index:{n}; transform: scale({SUBJECT_SCALE * c["zoom"]:.3f})"></video>  <!-- {html.escape(c["note"])} -->'
         )
         voice.append(
             f'      <audio id="vo{n:02d}" class="clip" src="assets/voice.m4a" data-start="{f(c["start"])}"'
@@ -109,12 +111,15 @@ def build_index():
       * {{ margin: 0; padding: 0; box-sizing: border-box; }}
       html, body {{ margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #000; }}
       body {{ font-family: "Montserrat", sans-serif; }}
-      #bump, #cam {{ position: absolute; inset: 0; transform-origin: 50% 30%; }}
+      #bump, #cam {{ position: absolute; inset: 0; transform-origin: 50% 62%; }}
       #bump {{ overflow: hidden; }}
-      #bgwrap {{ position: absolute; inset: 0; overflow: hidden; transform-origin: 50% 4%; }}
+      #bgwrap {{ position: absolute; inset: 0; overflow: hidden; transform-origin: 50% 15%; }}
       #bg {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
       #cam video {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover;
-        transform-origin: 50% 0%; }}
+        transform-origin: 50% 100%;
+        /* the selfie frame cuts the shoulders at its sides: fade those edges once the cutout is smaller */
+        -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+        mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%); }}
       /* Legibility scrim behind the top text band (cards + captions). */
       #scrim {{ position: absolute; left: 0; top: 0; width: 1080px; height: 900px; z-index: 30; pointer-events: none;
         background: linear-gradient(180deg, rgba(8,10,14,.62) 0%, rgba(8,10,14,.42) 45%, rgba(8,10,14,0) 100%); }}
@@ -126,7 +131,7 @@ def build_index():
            the price lines are moved to the front as the hook. Alternate zooms hide the jump cuts. -->
       <div id="bgwrap" data-layout-allow-overflow>
         <video id="bg" class="clip" src="assets/background.mp4" muted playsinline data-start="0"
-          data-duration="{f(TOTAL)}" data-media-start="0" data-track-index="0"
+          data-duration="{f(TOTAL)}" data-media-start="0" data-playback-rate="{BG_RATE}" data-track-index="0"
           data-color-grading="{GRADE_BG}" style="z-index:0"></video>
       </div>
       <div id="bump"><div id="cam" data-layout-allow-overflow>
@@ -153,8 +158,10 @@ def build_index():
       // Background: one slow push across the whole film, for depth behind the cutout.
       // Zoomed into the upper part of the rear-camera plate (the houses); the hand gestures in
       // that take sit in its lower half and fall outside the frame.
-      tl.set("#bgwrap", {{ scale: 1.55 }}, 0);
-      tl.to("#bgwrap", {{ scale: 1.63, duration: {f(TOTAL)}, ease: "none" }}, 0);
+      // Shows only the top ~48% of the rear-camera plate (sky + houses); in the 21-46 s window
+      // used here, that take's hand gestures never rise into that band.
+      tl.set("#bgwrap", {{ scale: 2.06 }}, 0);
+      tl.to("#bgwrap", {{ scale: 2.14, duration: {f(TOTAL)}, ease: "none" }}, 0);
       tl.set("#cam", {{ scale: 1 }}, 0);
       tl.to("#cam", {{ scale: 1.06, duration: 3.8, ease: "none" }}, 0);
       tl.set("#cam", {{ scale: 1 }}, 3.8);
