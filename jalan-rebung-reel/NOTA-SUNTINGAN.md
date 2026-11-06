@@ -1,4 +1,4 @@
-# Nota Suntingan — Teres 2 Tingkat, Jalan Rebung (Bukit Kapah)
+# Nota Suntingan — Teres 2 Tingkat, Jalan Rebung (Bukit Kapar)
 
 Sumber: satu take selfie 44.8s (iPhone, potret). Hasil suntingan: **32.7s**.
 
@@ -8,7 +8,7 @@ Sumber: satu take selfie 44.8s (iPhone, potret). Hasil suntingan: **32.7s**.
 |---|---|
 | 0.0–1.1 | *(senyap)* |
 | 1.1–1.6 | Okay guys, |
-| 2.0–5.8 | sekarang saya berada dekat Jalan Rebung, Bukit Kapah. |
+| 2.0–5.8 | sekarang saya berada dekat Jalan Rebung, Bukit Kapar. |
 | 6.3–13.0 | Belakang saya ni ada teres dua tingkat yang dah nak siap, jangka siap Q1 2027. |
 | 13.6–17.3 | Harga bermula dari RM505K net. |
 | 17.8–21.6 | So bulanan bermula serendah RM2.3K. |
@@ -33,6 +33,15 @@ Sumber: satu take selfie 44.8s (iPhone, potret). Hasil suntingan: **32.7s**.
 | 16.2–21.1 | Tawaran | Chip Cashback / Zero Deposit, FREEHOLD + Malay Reserve |
 | 21.1–27.3 | Tanah + bilik | Lot dilukis ikut skala 19' × 108', chip tanah belakang 43 kaki, ikon 4 bilik / 3 bilik air |
 | 27.3–32.7 | CTA | BERMINAT?, butang Contact Saya, cop UNIT SANGAT TERHAD, tutup dengan thumbs up |
+
+## Kecantikan muka (glow + gigi)
+- `tools/beauty.py` jejak muka setiap frame (MediaPipe Face Landmarker) dan **hanya dalam kawasan muka**:
+  licinkan kulit (edge-preserving, tekstur dikekalkan ~40%), tambah glow lembut pada kulit,
+  dan dalam garis bibir dalam: kurangkan kuning gigi + ratakan tona gigi yang lebih gelap.
+  Mata, kening, bibir, cermin mata, tudung dan latar tidak disentuh.
+- Grade seluruh frame: Hyperframes `media-treatment` Natural Portrait (`skin-soft`) + bloom sangat ringan
+  (`tools/grade.json`). Bloom kuat ditolak sebab langit jadi putih berkabus dan rumah hilang detail.
+- Kekuatan boleh diubah di atas `tools/beauty.py` (`SMOOTH`, `GLOW`, `TEETH_YELLOW`, `TEETH_EVEN`).
 
 Zoom berselang (1.0 / 1.12 / 1.22) pada setiap potongan untuk sembunyikan jump cut.
 Kesan bunyi (whoosh, pop, click, impact) dari pustaka Pixabay yang dibundel — lihat `assets/sfx/CREDITS.md`.

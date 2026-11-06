@@ -6,6 +6,9 @@ from tools/edl.py. Scene files in compositions/ (hook, lokasi, tawaran, tanah, c
 import json, os, html
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Look: Natural Portrait (skin-soft) + a very light bloom, written by `hyperframes media-treatment`
+# and kept in tools/grade.json. Face-only retouch is baked into assets/footage.mp4 by tools/beauty.py.
+GRADE = html.escape(json.dumps(json.load(open(os.path.join(ROOT, "tools", "grade.json"))), separators=(",", ":")), quote=True)
 d = json.load(open(os.path.join(ROOT, "tools", "edit-timeline.json")))
 clips, TOTAL, caps = d["clips"], d["total"], d["captions"]
 
@@ -34,7 +37,7 @@ SFX = [
     (S["lokasi"] + 0.0, "whoosh-short", 0.28),
     (S["lokasi"] + 0.32, "pop", 0.32),        # pin jatuh
     (S["lokasi"] + 0.50, "click-soft", 0.55), # JALAN REBUNG
-    (S["lokasi"] + 2.90, "click-soft", 0.50), # BUKIT KAPAH
+    (S["lokasi"] + 2.90, "click-soft", 0.50), # BUKIT KAPAR
     (S["lokasi"] + 4.95, "whoosh", 0.26),     # kad teres
     (S["lokasi"] + 7.37, "pop", 0.38),        # Q1 2027
     (S["tawaran"] + 0.08, "pop", 0.36),       # CASHBACK
@@ -63,6 +66,7 @@ def build_index():
             f'        <video id="v{n:02d}" class="clip" src="assets/footage.mp4" playsinline data-has-audio="true"\n'
             f'          data-start="{f(c["start"])}" data-duration="{f(c["dur"])}" data-media-start="{f(c["src"])}"\n'
             f'          data-fade-in="0.02" data-fade-out="0.03" data-track-index="0"\n'
+            f'          data-color-grading="{GRADE}"\n'
             f'          style="z-index:{n}; transform: scale({c["zoom"]})"></video>  <!-- {html.escape(c["note"])} -->'
         )
     hosts = []
@@ -152,7 +156,7 @@ def build_captions():
             cls = "w hl" if w in c["hl"] else "w"
             words.append(f'<span class="{cls}">{html.escape(w)}</span>')
         size = min(70, int(1480 / max(len(c["text"]), 1)))
-        groups.append(f'    <div id="{c["id"]}" class="cg" style="font-size:{size}px">{" ".join(words)}</div>')
+        groups.append(f'    <div id="{c["id"]}" class="cg" style="font-size:{size}px">{"&nbsp;".join(words)}</div>')
         a = c["start"] - CAPTIONS_FROM - 0.05
         nxt = shown[k + 1]["start"] - CAPTIONS_FROM - 0.05 if k + 1 < len(shown) else 1e9
         end = min(c["end"] - CAPTIONS_FROM + 0.3, nxt, TOTAL - CAPTIONS_FROM - 0.02)
@@ -173,7 +177,7 @@ def build_captions():
       font-family: "Montserrat", sans-serif; font-weight: 800; line-height: 1.15; color: #fff; opacity: 0;
       overflow: visible; -webkit-text-stroke: 12px #0b0d12; paint-order: stroke fill;
       text-shadow: 0 6px 18px rgba(0,0,0,.45); }}
-    #root .w {{ display: inline-block; margin: 0 0.03em; }}
+    #root .w {{ display: inline-block; margin: 0 0.08em; }}
     #root .hl {{ color: #ffc93c; }}
   </style>
   <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">

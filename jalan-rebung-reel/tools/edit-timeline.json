@@ -34,7 +34,7 @@
    "src": 1.96,
    "src_out": 5.8,
    "zoom": 1.0,
-   "note": "Sekarang saya berada dekat Jalan Rebung, Bukit Kapah."
+   "note": "Sekarang saya berada dekat Jalan Rebung, Bukit Kapar."
   },
   {
    "i": 4,
@@ -199,12 +199,12 @@
   },
   {
    "id": "cap6",
-   "text": "Bukit Kapah.",
+   "text": "Bukit Kapar.",
    "start": 10.13,
    "end": 11.02,
    "hl": [
     "Bukit",
-    "Kapah."
+    "Kapar."
    ]
   },
   {
