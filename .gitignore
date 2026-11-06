@@ -6,3 +6,5 @@ preview/
 node_modules/
 renders/
 *.mov
+# In-progress temp files from hyperframes remove-background
+**/.tmp-*
