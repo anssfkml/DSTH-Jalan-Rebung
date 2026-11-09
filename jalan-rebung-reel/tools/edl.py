@@ -49,6 +49,17 @@ CAPS = [
     ("sangat dah terhad.", 42.39, 43.31, ["terhad."]),
 ]
 
+# B-roll cutaways over the voice: (asset in assets/broll, edit-time in, edit-time out, note).
+# Times are given as source seconds of the face-talk take (word boundaries), mapped through the cut.
+BROLL_SRC = [
+    ("drone-hook", 13.52, 17.32, "HOOK aerial under the price"),
+    ("drone-wide", 3.30, 5.80, "Jalan Rebung, Bukit Kapar"),
+    ("row", 7.33, 8.66, "teres dua tingkat"),
+    ("drone-front", 10.22, 12.97, "jangka siap Q1 2027"),
+    ("drone-roofs", 31.53, 34.50, "19 darab 108 kaki"),
+    ("backyard", 34.67, 36.36, "Tanah belakang 43 kaki"),
+]
+
 def timeline():
     t = 0.0; clips = []
     for i, (a, b, z, note) in enumerate(EDL):
@@ -72,5 +83,7 @@ if __name__ == "__main__":
         caps.append({"id": f"cap{k}", "text": txt, "start": to_edit(s, clips), "end": to_edit(e, clips), "hl": hl})
     for c in caps: print(f'  {c["start"]:6.2f}-{c["end"]:6.2f}  {c["text"]}')
     import os
-    json.dump({"clips": clips, "total": total, "captions": caps},
+    broll = [{"id": n, "start": to_edit(a, clips), "end": to_edit(b, clips), "note": note} for n, a, b, note in BROLL_SRC]
+    for b in broll: print(f'  BROLL {b["start"]:6.2f}-{b["end"]:6.2f}  {b["id"]:12s} {b["note"]}')
+    json.dump({"clips": clips, "total": total, "captions": caps, "broll": broll},
               open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "edit-timeline.json"), "w"), indent=1)

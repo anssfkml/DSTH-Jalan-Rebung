@@ -14,7 +14,7 @@ GRADE = html.escape(json.dumps(_grade, separators=(",", ":")), quote=True)
 _grade_bg = json.loads(json.dumps(_grade)); _grade_bg["effects"]["bloom"] = 0
 GRADE_BG = html.escape(json.dumps(_grade_bg, separators=(",", ":")), quote=True)
 d = json.load(open(os.path.join(ROOT, "tools", "edit-timeline.json")))
-clips, TOTAL, caps = d["clips"], d["total"], d["captions"]
+clips, TOTAL, caps, BROLL = d["clips"], d["total"], d["captions"], d.get("broll", [])
 
 # Scene hosts: (id, start, end) in edit time. Keep in sync with the scene files.
 SCENES = [
@@ -36,6 +36,9 @@ DUR = {"pop": 0.72, "whoosh": 0.575, "whoosh-short": 0.575, "click-soft": 0.366,
 S = {s[0]: s[1] for s in SCENES}
 LANE = {"pop": 4, "click-soft": 5, "whoosh": 6, "whoosh-short": 6, "impact-bass-1": 7, "whoosh-cinematic": 8}
 SFX = [
+    (0.10, "whoosh", 0.22),                   # first frame: aerial already moving
+    (8.57, "whoosh-short", 0.26),             # cut to the wide aerial (Jalan Rebung)
+    (13.49, "whoosh-short", 0.22),            # cut to the front facades (Q1 2027)
     (1.40, "pop", 0.35),                      # harga "punch"
     (3.45, "impact-bass-1", 0.20),            # cop NET
     (3.80, "whoosh", 0.30),                   # tukar ke kad bulanan
@@ -84,6 +87,22 @@ def build_index():
             f' data-duration="{f(c["dur"])}" data-media-start="{f(c["src"])}" data-fade-in="0.02" data-fade-out="0.03"'
             f' data-volume="1" data-track-index="2"></audio>'
         )
+    # B-roll cutaways: full-frame shots over the presenter while the voice runs on.
+    # Per-shot reframe (scale, origin): the ground-level row shot has a mud puddle in its lower third.
+    CROP = {"row": (1.38, "50% 22%")}
+    brolls = []
+    for b in BROLL:
+        sc, org = CROP.get(b["id"], (1, "50% 50%"))
+        brolls.append(
+            f'        <div id="w-{b["id"]}" class="brw"><video id="br-{b["id"]}" class="clip" src="assets/broll/{b["id"]}.mp4" muted playsinline\n'
+            f'          data-start="{f(b["start"])}" data-duration="{f(b["end"] - b["start"])}" data-media-start="0" data-track-index="3"\n'
+            f'          data-color-grading="{GRADE_BG}" style="transform: scale({sc}); transform-origin: {org}"></video></div>  <!-- {html.escape(b["note"])} -->'
+        )
+    br_tl = []
+    for b in BROLL:
+        a, dur = b["start"], b["end"] - b["start"]
+        br_tl.append(f'      tl.fromTo("#w-{b["id"]}", {{ scale: 1.16 }}, {{ scale: 1.0, duration: 0.32, ease: "power3.out" }}, {f(a)});')
+        br_tl.append(f'      tl.to("#w-{b["id"]}", {{ scale: 1.07, duration: {f(max(dur - 0.32, 0.1))}, ease: "none" }}, {f(a + 0.32)});')
     hosts = []
     for k, (sid, a, b) in enumerate(SCENES):
         hosts.append(
@@ -113,6 +132,8 @@ def build_index():
       body {{ font-family: "Montserrat", sans-serif; }}
       #bump, #cam {{ position: absolute; inset: 0; transform-origin: 50% 62%; }}
       #bump {{ overflow: hidden; }}
+      .brw {{ position: absolute; inset: 0; overflow: hidden; z-index: 20; transform-origin: 50% 50%; }}
+      .brw video {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
       #bgwrap {{ position: absolute; inset: 0; overflow: hidden; transform-origin: 50% 15%; }}
       #bg {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
       #cam video {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover;
@@ -136,7 +157,10 @@ def build_index():
       </div>
       <div id="bump"><div id="cam" data-layout-allow-overflow>
 {chr(10).join(vids)}
-      </div></div>
+      </div>
+        <!-- B-roll: drone, ground-level row and back land; picture only, the voice carries on -->
+{chr(10).join(brolls)}
+      </div>
 
       <!-- Voice (front camera), cut with the picture -->
 {chr(10).join(voice)}
@@ -173,6 +197,8 @@ def build_index():
       tl.to("#bump", {{ scale: 1, duration: 0.3, ease: "power2.inOut" }}, 1.48);
       tl.to("#bump", {{ scale: 1.035, duration: 0.07, ease: "power3.out" }}, 3.45);
       tl.to("#bump", {{ scale: 1, duration: 0.3, ease: "power2.out" }}, 3.52);
+      // B-roll: punch in on the cut, then a slow push.
+{chr(10).join(br_tl)}
       window.__timelines = window.__timelines || {{}};
       window.__timelines["main"] = tl;
     </script>

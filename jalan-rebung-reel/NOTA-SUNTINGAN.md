@@ -34,6 +34,27 @@ Sumber: satu take selfie 44.8s (iPhone, potret). Hasil suntingan: **32.7s**.
 | 21.1–27.3 | Tanah + bilik | Lot dilukis ikut skala 19' × 108', chip tanah belakang 43 kaki, ikon 4 bilik / 3 bilik air |
 | 27.3–32.7 | CTA | BERMINAT?, butang Contact Saya, cop UNIT SANGAT TERHAD, tutup dengan thumbs up |
 
+## B-roll (versi 2 — fail baharu dari Google Drive)
+Sumber dalam folder Drive "DSTH Jalan Rebung": `face talk` (sama seperti sebelum ini), `DJI_0082.MP4` (drone 4K, 92s),
+`overview` (6.4s), `2 overview` (24.6s), `backyard` (11.1s).
+
+Transkrip b-roll: `overview` dan `2 overview` tiada ucapan (hanya bunyi angin). `backyard` ada suara perlahan
+("…mana dia, panjangnya 43 kaki…") tapi terlalu perlahan dan bertindih dengan face talk — audio tidak dipakai, gambar sahaja.
+
+| Masa edit | Shot | Ucapan di atasnya |
+|---|---|---|
+| 0.00–3.80 | Drone orbit dari depan rumah (2x) | **HOOK** "Harga bermula dari RM505K net" |
+| 8.57–11.07 | Drone wide, deretan penuh + bukit (2x) | "…Jalan Rebung, Bukit Kapar" |
+| 12.16–13.49 | Ground-level deretan gable (crop atas, lopak lumpur dibuang) | "teres dua tingkat" |
+| 13.49–16.24 | Drone depan rumah hampir siap (2x) | "jangka siap Q1 2027" |
+| 21.12–23.75 | Drone sudut tinggi sepanjang deretan (2x) | "19 darab 108 kaki" |
+| 23.75–25.44 | Backyard: tangan tunjuk tanah belakang | "Tanah belakang 43 kaki" |
+
+Tidak dipakai: `2 overview` (banyak sampah binaan di depan), drone 60–92s (blok yang belum siap).
+Setiap b-roll masuk dengan punch-in (1.16 → 1.0) + whoosh, kemudian push perlahan.
+Semua teks diperiksa dalam TikTok safe zone (atas 150px, bawah 420px, lajur ikon kanan 120px).
+Potong semula: `python3 tools/broll.py` (perlu `source/drive/`), senarai shot dalam `BROLL_SRC` di `tools/edl.py`.
+
 ## Kecantikan muka (glow + gigi)
 - `tools/beauty.py` jejak muka setiap frame (MediaPipe Face Landmarker) dan **hanya dalam kawasan muka**:
   licinkan kulit (edge-preserving, tekstur dikekalkan ~40%), tambah glow lembut pada kulit,
@@ -58,4 +79,4 @@ Kesan bunyi (whoosh, pop, click, impact) dari pustaka Pixabay yang dibundel — 
 ## Cara ubah
 - Potongan & caption: `tools/edl.py` → `python3 tools/edl.py && python3 tools/build.py`
 - Grafik setiap babak: `compositions/*.html`
-- Preview: `npx hyperframes preview` · Semak: `npx hyperframes check` · Render final: `npx hyperframes render`
+- Preview: `npx hyperframes preview` · Draf preview: `npx hyperframes render -q draft -o preview/draf.mp4` · Semak: `npx hyperframes check` · Render final: `npx hyperframes render`

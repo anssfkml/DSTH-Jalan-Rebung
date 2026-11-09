@@ -363,5 +363,43 @@
     "terhad."
    ]
   }
+ ],
+ "broll": [
+  {
+   "id": "drone-hook",
+   "start": 0.0,
+   "end": 3.8,
+   "note": "HOOK aerial under the price"
+  },
+  {
+   "id": "drone-wide",
+   "start": 8.57,
+   "end": 11.07,
+   "note": "Jalan Rebung, Bukit Kapar"
+  },
+  {
+   "id": "row",
+   "start": 12.16,
+   "end": 13.49,
+   "note": "teres dua tingkat"
+  },
+  {
+   "id": "drone-front",
+   "start": 13.49,
+   "end": 16.24,
+   "note": "jangka siap Q1 2027"
+  },
+  {
+   "id": "drone-roofs",
+   "start": 21.12,
+   "end": 23.75,
+   "note": "19 darab 108 kaki"
+  },
+  {
+   "id": "backyard",
+   "start": 23.75,
+   "end": 25.44,
+   "note": "Tanah belakang 43 kaki"
+  }
  ]
 }
