@@ -12,12 +12,13 @@ OUT = os.path.join(ROOT, "assets", "broll")
 
 # name: (source file, in, out, speed, note)
 SHOTS = {
+    "backyard":    ("Dsth jalan rebung backyard", 1.9, 3.1, 1.0, "hand points across the back land (hook frame 0)"),
+    "drone-back":  ("DJI_0082.MP4", 52.0, 56.0, 2.0, "rear of the row, the cleared back land in front"),
     "drone-hook":  ("DJI_0082.MP4", 13.0, 21.0, 2.0, "orbit off the front facades along the row"),
     "drone-wide":  ("DJI_0082.MP4", 40.0, 48.0, 2.0, "sweep to the whole row with the hills behind"),
     "row":         ("Dsth jalan rebung overview", 0.0, 2.0, 1.25, "ground level, row of gables in perspective"),
     "drone-front": ("DJI_0082.MP4", 2.0, 8.0, 2.0, "front facades, near-finished"),
     "drone-roofs": ("DJI_0082.MP4", 26.0, 34.0, 2.0, "high angle down the length of the row"),
-    "backyard":    ("Dsth jalan rebung backyard", 1.9, 4.2, 1.0, "hand points across the back land"),
 }
 
 if __name__ == "__main__":

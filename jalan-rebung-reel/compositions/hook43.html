@@ -1,0 +1,42 @@
+<template>
+  <!-- HOOK 43 (edit 0 – 2.76s): "Tanah dia besar ya, tanah belakang 43 kaki."
+       0 – 1.07 presenter, 1.07 – 2.76 drone over the back land (highlight drawn in index.html). -->
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; font-family: "Montserrat", sans-serif; color: #fff; }
+    #h4-wrap { position: absolute; left: 0; top: 0; width: 1080px; height: 760px; }
+    #h4-top { position: absolute; left: 0; top: 214px; width: 1080px; text-align: center; font-weight: 900;
+      font-size: 88px; line-height: 1; letter-spacing: -1px; text-shadow: 0 6px 24px rgba(0,0,0,.55); }
+    #h4-big { position: absolute; left: 0; top: 300px; width: 1080px; text-align: center; white-space: nowrap; }
+    #h4-num { display: inline-block; font-weight: 900; font-size: 330px; line-height: 1; color: #ffc93c; letter-spacing: -10px;
+      text-shadow: 0 10px 36px rgba(0,0,0,.5); transform-origin: 50% 60%; }
+    #h4-unit { display: inline-block; font-weight: 900; font-size: 84px; line-height: 1; margin-left: 18px; vertical-align: 40px; }
+    #h4-stamp { position: absolute; left: 700px; top: 312px; padding: 10px 24px; border: 6px solid #fff; border-radius: 14px;
+      background: #ff3b3b; color: #fff; font-weight: 900; font-size: 58px; line-height: 1; letter-spacing: 2px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+  </style>
+  <div id="root" data-composition-id="hook43" data-width="1080" data-height="1920">
+    <div id="h4-wrap">
+      <div id="h4-top">TANAH BELAKANG</div>
+      <div id="h4-big"><span id="h4-num">43'</span><span id="h4-unit">KAKI</span></div>
+      <div id="h4-stamp" data-layout-allow-overlap>BESAR!</div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Frame 0 already reads: settle-in only, never from invisible.
+    tl.fromTo("#h4-top", { y: -14 }, { y: 0, duration: 0.45, ease: "power3.out" }, 0);
+    tl.fromTo("#h4-num", { scale: 1.14 }, { scale: 1, duration: 0.5, ease: "back.out(2.2)" }, 0);
+    tl.fromTo("#h4-unit", { x: 24 }, { x: 0, duration: 0.45, ease: "power3.out" }, 0);
+    // "besar": stamp lands.
+    tl.fromTo("#h4-stamp", { opacity: 0, scale: 2.6, rotation: -24 },
+      { opacity: 1, scale: 1, rotation: -10, duration: 0.16, ease: "power4.in" }, 0.36);
+    tl.to("#h4-stamp", { scale: 1.08, duration: 0.06, ease: "power2.out" }, 0.52);
+    tl.to("#h4-stamp", { scale: 1, duration: 0.2, ease: "power2.out" }, 0.58);
+    // "43" said over the drone: number punches with the label on the land.
+    tl.to("#h4-num", { scale: 1.12, duration: 0.09, ease: "power2.out" }, 2.18);
+    tl.to("#h4-num", { scale: 1, duration: 0.3, ease: "back.out(3)" }, 2.27);
+    tl.to("#h4-wrap", { opacity: 0, y: -50, duration: 0.15, ease: "power2.in" }, 2.6);
+    window.__timelines = window.__timelines || {};
+    window.__timelines["hook43"] = tl;
+  </script>
+</template>

@@ -1,5 +1,5 @@
 <template>
-  <!-- TANAH (edit 21.12 – 27.25s, local 0 – 6.13): lot outline drawn to scale (19 x 108 ft), rear land chip, rooms. -->
+  <!-- TANAH (local 0 – 4.44): lot outline drawn to scale (19 x 108 ft), rear land reminder chip, rooms. -->
   <style>
     #root { position: absolute; inset: 0; pointer-events: none; font-family: "Montserrat", sans-serif; color: #fff; }
     #tn-lab { position: absolute; left: 0; top: 198px; width: 1080px; text-align: center; font-weight: 800; font-size: 34px;
@@ -64,14 +64,14 @@
     tl.fromTo("#tn-x", { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 1.18);
     tl.fromTo("#tn-dim", { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "none" }, 1.18);
     tl.fromTo("#tn-dim i", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.out" }, 1.18);
-    // "tanah belakang 43 kaki"
-    tl.fromTo("#tn-back", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.6)" }, 2.69);
-    tl.to("#tn-a", { opacity: 0, y: -40, duration: 0.2, ease: "power2.in" }, 4.14);
+    // rear land reminder (said in the hook)
+    tl.fromTo("#tn-back", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.6)" }, 1.75);
+    tl.to("#tn-a", { opacity: 0, y: -40, duration: 0.2, ease: "power2.in" }, 2.45);
 
-    tl.fromTo("#tn-b", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 4.36);
-    tl.fromTo("#tn-t1", { opacity: 0, scale: 0.7, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(2)" }, 4.38);
-    tl.fromTo("#tn-t2", { opacity: 0, scale: 0.7, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(2)" }, 5.33);
-    tl.to(["#tn-t1", "#tn-t2"], { opacity: 0, y: -40, duration: 0.18, ease: "power2.in", stagger: 0.03 }, 5.9);
+    tl.fromTo("#tn-b", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 2.65);
+    tl.fromTo("#tn-t1", { opacity: 0, scale: 0.7, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(2)" }, 2.67);
+    tl.fromTo("#tn-t2", { opacity: 0, scale: 0.7, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "back.out(2)" }, 3.64);
+    tl.to(["#tn-t1", "#tn-t2"], { opacity: 0, y: -40, duration: 0.18, ease: "power2.in", stagger: 0.03 }, 4.2);
     window.__timelines = window.__timelines || {};
     window.__timelines["tanah"] = tl;
   </script>

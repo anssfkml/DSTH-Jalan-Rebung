@@ -34,6 +34,15 @@ Sumber: satu take selfie 44.8s (iPhone, potret). Hasil suntingan: **32.7s**.
 | 21.1–27.3 | Tanah + bilik | Lot dilukis ikut skala 19' × 108', chip tanah belakang 43 kaki, ikon 4 bilik / 3 bilik air |
 | 27.3–32.7 | CTA | BERMINAT?, butang Contact Saya, cop UNIT SANGAT TERHAD, tutup dengan thumbs up |
 
+## Hook versi 3: tanah belakang 43'
+Hook baharu (0–2.76s): *"Tanah dia besar ya, tanah belakang 43 kaki."* dipindah ke depan.
+- 0–1.07: shot backyard (tangan tunjuk tanah belakang) + teks besar TANAH BELAKANG **43'** KAKI dari frame 0, cop BESAR! pada "besar".
+  (Muka awak pada ayat ni tunduk/tangan dekat muka, jadi tak dipakai sebagai frame pertama.)
+- 1.07–2.76: drone belakang rumah (DJI 52–56s, 2x), jalur tanah belakang disorot kuning + anak panah + label **43 KAKI** pada "43".
+- Kemudian harga RM505K (drone depan) seperti sebelum ini.
+Ayat "tanah dia besar ya" dan "tanah belakang 43 kaki" dibuang dari bahagian tengah supaya tak berulang;
+kad keluasan tanah masih tunjuk chip "+ TANAH BELAKANG 43 KAKI" sebagai peringatan.
+
 ## B-roll (versi 2 — fail baharu dari Google Drive)
 Sumber dalam folder Drive "DSTH Jalan Rebung": `face talk` (sama seperti sebelum ini), `DJI_0082.MP4` (drone 4K, 92s),
 `overview` (6.4s), `2 overview` (24.6s), `backyard` (11.1s).

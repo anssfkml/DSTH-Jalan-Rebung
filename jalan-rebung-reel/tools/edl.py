@@ -3,7 +3,9 @@ Run `python3 tools/edl.py` to print the edit timeline used by index.html / compo
 import json
 # (src_in, src_out, zoom, note)
 EDL = [
-    (13.52, 17.32, 1.00, "HOOK  Harga bermula dari RM505K net."),
+    (29.90, 30.97, 1.00, "HOOK  Tanah dia besar ya,"),
+    (34.67, 36.36, 1.00, "HOOK  Tanah belakang 43 kaki, [drone: back land highlighted]"),
+    (13.52, 17.32, 1.00, "Harga bermula dari RM505K net."),
     (17.96, 19.79, 1.12, "bulanan bermula serendah"),
     (20.10, 21.70, 1.22, "RM2.3K."),
     (1.96, 5.80, 1.00, "Sekarang saya berada dekat Jalan Rebung, Bukit Kapar."),
@@ -13,10 +15,8 @@ EDL = [
     (23.82, 24.74, 1.00, "kalau nak cashback,"),
     (25.70, 26.52, 1.15, "zero deposit."),
     (28.15, 29.34, 1.00, "Freehold Malay Reserve,"),
-    (29.90, 30.97, 1.12, "tanah dia besar ya,"),
     (31.53, 32.60, 1.00, "19 darab"),
     (32.94, 34.50, 1.12, "108 kaki."),
-    (34.67, 36.36, 1.00, "Tanah belakang 43 kaki,"),
     (36.86, 38.67, 1.12, "4 bilik, 3 bilik air."),
     (39.24, 44.70, 1.00, "So kalau berminat, cepat-cepat contact saya sebab unit sangat dah terhad. [thumbs up]"),
 ]
@@ -52,12 +52,14 @@ CAPS = [
 # B-roll cutaways over the voice: (asset in assets/broll, edit-time in, edit-time out, note).
 # Times are given as source seconds of the face-talk take (word boundaries), mapped through the cut.
 BROLL_SRC = [
-    ("drone-hook", 13.52, 17.32, "HOOK aerial under the price"),
+    ("backyard", 29.90, 30.97, "HOOK hand points at the back land, frame 0"),
+    ("drone-back", 34.67, 36.36, "HOOK back land highlighted, 43 kaki"),
+    ("drone-hook", 13.52, 17.32, "aerial under the price"),
     ("drone-wide", 3.30, 5.80, "Jalan Rebung, Bukit Kapar"),
     ("row", 7.33, 8.66, "teres dua tingkat"),
     ("drone-front", 10.22, 12.97, "jangka siap Q1 2027"),
     ("drone-roofs", 31.53, 34.50, "19 darab 108 kaki"),
-    ("backyard", 34.67, 36.36, "Tanah belakang 43 kaki"),
+
 ]
 
 def timeline():

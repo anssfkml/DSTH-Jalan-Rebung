@@ -21,13 +21,14 @@ clips, TOTAL, caps, BROLL = d["clips"], d["total"], d["captions"], d.get("broll"
 
 # Scene hosts: (id, start, end) in edit time. Keep in sync with the scene files.
 SCENES = [
-    ("hook", 0.0, clips[3]["start"]),
-    ("lokasi", clips[3]["start"], clips[6]["start"]),
-    ("tawaran", clips[6]["start"], clips[11]["start"]),
-    ("tanah", clips[11]["start"], clips[15]["start"]),
+    ("hook43", 0.0, clips[2]["start"]),
+    ("hook", clips[2]["start"], clips[5]["start"]),
+    ("lokasi", clips[5]["start"], clips[8]["start"]),
+    ("tawaran", clips[8]["start"], clips[12]["start"]),
+    ("tanah", clips[12]["start"], clips[15]["start"]),
     ("cta", clips[15]["start"], TOTAL),
 ]
-CAPTIONS_FROM = clips[3]["start"]
+CAPTIONS_FROM = clips[5]["start"]
 SUBJECT_SCALE = 0.8   # presenter size over the background (anchored to the bottom edge)
 BG_RATE = 0.77        # background plate speed: 32.7 s of film from its 25.2 s hand-free-at-the-top window  # hook cards already show the spoken price lines
 
@@ -38,14 +39,20 @@ DUR = {"pop": 0.72, "whoosh": 0.575, "whoosh-short": 0.575, "click-soft": 0.366,
        "impact-bass-1": 2.116, "whoosh-cinematic": 5.54}
 S = {s[0]: s[1] for s in SCENES}
 LANE = {"pop": 4, "click-soft": 5, "whoosh": 6, "whoosh-short": 6, "impact-bass-1": 7, "whoosh-cinematic": 8}
+BR = {b["id"]: b["start"] for b in BROLL}
+H = S["hook"]
 SFX = [
-    (0.10, "whoosh", 0.22),                   # first frame: aerial already moving
-    (8.57, "whoosh-short", 0.26),             # cut to the wide aerial (Jalan Rebung)
-    (13.49, "whoosh-short", 0.22),            # cut to the front facades (Q1 2027)
-    (1.40, "pop", 0.35),                      # harga "punch"
-    (3.45, "impact-bass-1", 0.20),            # cop NET
-    (3.80, "whoosh", 0.30),                   # tukar ke kad bulanan
-    (5.69, "pop", 0.40),                      # RM2.3K mendarat
+    (0.03, "impact-bass-1", 0.22),            # frame 0: 43' slams in
+    (0.52, "pop", 0.36),                      # BESAR! stamp on "besar"
+    (BR["drone-back"], "whoosh", 0.30),       # cut to the drone, highlight sweeps across the land
+    (2.22, "pop", 0.40),                      # "43" said: 43 KAKI label
+    (BR["drone-wide"], "whoosh-short", 0.26), # cut to the wide aerial (Jalan Rebung)
+    (BR["drone-front"], "whoosh-short", 0.22),# cut to the front facades (Q1 2027)
+    (H + 0.0, "whoosh", 0.24),                # cut to the price aerial
+    (H + 1.40, "pop", 0.35),                  # harga "punch"
+    (H + 3.45, "impact-bass-1", 0.20),        # cop NET
+    (H + 3.80, "whoosh", 0.30),               # tukar ke kad bulanan
+    (H + 5.69, "pop", 0.40),                  # RM2.3K mendarat
     (S["lokasi"] + 0.0, "whoosh-short", 0.28),
     (S["lokasi"] + 0.32, "pop", 0.32),        # pin jatuh
     (S["lokasi"] + 0.50, "click-soft", 0.55), # JALAN REBUNG
@@ -57,9 +64,9 @@ SFX = [
     (S["tawaran"] + 2.68, "whoosh-short", 0.28),  # FREEHOLD
     (S["tanah"] + 0.05, "whoosh", 0.24),      # lot dilukis
     (S["tanah"] + 1.18, "click-soft", 0.55),  # 108'
-    (S["tanah"] + 2.69, "pop", 0.36),         # tanah belakang
-    (S["tanah"] + 4.38, "pop", 0.32),         # 4 bilik
-    (S["tanah"] + 5.33, "click-soft", 0.55),  # 3 bilik air
+    (S["tanah"] + 1.75, "pop", 0.30),         # + tanah belakang (reminder chip)
+    (S["tanah"] + 2.67, "pop", 0.32),         # 4 bilik
+    (S["tanah"] + 3.64, "click-soft", 0.55),  # 3 bilik air
     (S["cta"] + 0.06, "whoosh-cinematic", 0.22),  # BERMINAT? (swell peaks on it)
     (S["cta"] + 1.05, "pop", 0.38),           # butang contact
     (S["cta"] + 3.35, "impact-bass-1", 0.20), # UNIT TERHAD
@@ -93,19 +100,44 @@ def build_index():
     # B-roll cutaways: full-frame shots over the presenter while the voice runs on.
     # Per-shot reframe (scale, origin): the ground-level row shot has a mud puddle in its lower third.
     CROP = {"row": (1.38, "50% 22%")}
+    # Back-land highlight drawn on the drone frame (traced at 53 s of DJI_0082): the cleared strip
+    # between the rear walls and the bushes, plus a depth arrow and a 43 KAKI label. It sits inside the
+    # shot's wrapper so it scales with the footage.
+    EXTRA = {"drone-back": """
+          <svg id="bk-svg" viewBox="0 0 1080 1920" data-layout-allow-overflow>
+            <polygon id="bk-land" points="0,1205 450,1122 840,1048 1080,1010 1080,1160 840,1280 675,1355 495,1400 270,1505 230,1590 0,1590"
+              fill="rgba(255,201,60,.30)" stroke="#ffc93c" stroke-width="7" stroke-linejoin="round" stroke-dasharray="22 12"/>
+            <g id="bk-arrow" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none">
+              <line x1="560" y1="1118" x2="560" y2="1372"/>
+              <polyline points="536,1144 560,1116 584,1144"/><polyline points="536,1346 560,1374 584,1346"/>
+            </g>
+          </svg>
+          <div id="bk-tag"><b>43</b> KAKI</div>"""}
     brolls = []
     for b in BROLL:
         sc, org = CROP.get(b["id"], (1, "50% 50%"))
         brolls.append(
-            f'        <div id="w-{b["id"]}" class="brw"><video id="br-{b["id"]}" class="clip" src="assets/broll/{b["id"]}.mp4" muted playsinline\n'
+            f'        <div id="w-{b["id"]}" class="brw" data-layout-allow-overflow><video id="br-{b["id"]}" class="clip" src="assets/broll/{b["id"]}.mp4" muted playsinline\n'
             f'          data-start="{f(b["start"])}" data-duration="{f(b["end"] - b["start"])}" data-media-start="0" data-track-index="3"\n'
-            f'          {f'data-color-grading="{GRADE_BG}"' if GRADE_BG else ""} style="transform: scale({sc}); transform-origin: {org}"></video></div>  <!-- {html.escape(b["note"])} -->'
+            f'          {f'data-color-grading="{GRADE_BG}"' if GRADE_BG else ""} style="transform: scale({sc}); transform-origin: {org}"></video>{EXTRA.get(b["id"], "")}</div>  <!-- {html.escape(b["note"])} -->'
         )
     br_tl = []
     for b in BROLL:
         a, dur = b["start"], b["end"] - b["start"]
         br_tl.append(f'      tl.fromTo("#w-{b["id"]}", {{ scale: 1.16 }}, {{ scale: 1.0, duration: 0.32, ease: "power3.out" }}, {f(a)});')
         br_tl.append(f'      tl.to("#w-{b["id"]}", {{ scale: 1.07, duration: {f(max(dur - 0.32, 0.1))}, ease: "none" }}, {f(a + 0.32)});')
+    bk = next(b for b in BROLL if b["id"] == "drone-back")
+    a, e = bk["start"], bk["end"]
+    br_tl += [
+        '      // Back land: strip wipes on left to right, arrow grows, label pops on "43".',
+        f'      tl.set(["#bk-svg", "#bk-tag"], {{ opacity: 0 }}, 0);',
+        f'      tl.set("#bk-svg", {{ opacity: 1 }}, {f(a + 0.06)});',
+        f'      tl.fromTo("#bk-land", {{ clipPath: "inset(0 100% 0 0)" }}, {{ clipPath: "inset(0 0% 0 0)", duration: 0.45, ease: "power2.inOut" }}, {f(a + 0.06)});',
+        f'      tl.fromTo("#bk-land", {{ strokeDashoffset: 0 }}, {{ strokeDashoffset: -68, duration: {f(e - a)}, ease: "none" }}, {f(a)});',
+        f'      tl.fromTo("#bk-arrow", {{ scaleY: 0, transformOrigin: "560px 1245px" }}, {{ scaleY: 1, duration: 0.35, ease: "back.out(1.8)" }}, {f(a + 0.4)});',
+        f'      tl.fromTo("#bk-tag", {{ opacity: 0, scale: 0.4 }}, {{ opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2.6)" }}, 2.18);',
+        f'      tl.set(["#bk-svg", "#bk-tag"], {{ opacity: 0 }}, {f(e)});',
+    ]
     hosts = []
     for k, (sid, a, b) in enumerate(SCENES):
         hosts.append(
@@ -136,6 +168,11 @@ def build_index():
       #bump, #cam {{ position: absolute; inset: 0; transform-origin: 50% 62%; }}
       #bump {{ overflow: hidden; }}
       .brw {{ position: absolute; inset: 0; overflow: hidden; z-index: 20; transform-origin: 50% 50%; }}
+      #bk-svg {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }}
+      #bk-tag {{ position: absolute; left: 604px; top: 1196px; padding: 12px 26px; border-radius: 18px; background: #ffc93c;
+        color: #0e1116; font-weight: 900; font-size: 46px; line-height: 1; letter-spacing: 1px; white-space: nowrap;
+        box-shadow: 0 10px 30px rgba(0,0,0,.4); transform-origin: 0% 50%; }}
+      #bk-tag b {{ font-size: 72px; letter-spacing: -1px; vertical-align: -6px; }}
       .brw video {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
       #bgwrap {{ position: absolute; inset: 0; overflow: hidden; transform-origin: 50% 15%; }}
       #bg {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
@@ -190,16 +227,16 @@ def build_index():
       tl.set("#bgwrap", {{ scale: 2.06 }}, 0);
       tl.to("#bgwrap", {{ scale: 2.14, duration: {f(TOTAL)}, ease: "none" }}, 0);
       tl.set("#cam", {{ scale: 1 }}, 0);
-      tl.to("#cam", {{ scale: 1.06, duration: 3.8, ease: "none" }}, 0);
-      tl.set("#cam", {{ scale: 1 }}, 3.8);
+      tl.to("#cam", {{ scale: 1.07, duration: {f(clips[1]["start"])}, ease: "none" }}, 0);
+      tl.set("#cam", {{ scale: 1 }}, {f(clips[1]["start"])});
       // CTA: gentle push-in to the end.
       tl.to("#cam", {{ scale: 1.05, duration: {f(TOTAL - SCENES[-1][1])}, ease: "none" }}, {f(SCENES[-1][1])});
       // Bumps on the price and on the NET stamp (outer wrapper, so they never fight the push).
       tl.set("#bump", {{ scale: 1 }}, 0);
-      tl.to("#bump", {{ scale: 1.03, duration: 0.08, ease: "power2.out" }}, 1.4);
-      tl.to("#bump", {{ scale: 1, duration: 0.3, ease: "power2.inOut" }}, 1.48);
-      tl.to("#bump", {{ scale: 1.035, duration: 0.07, ease: "power3.out" }}, 3.45);
-      tl.to("#bump", {{ scale: 1, duration: 0.3, ease: "power2.out" }}, 3.52);
+      tl.to("#bump", {{ scale: 1.03, duration: 0.08, ease: "power2.out" }}, {f(S["hook"] + 1.4)});
+      tl.to("#bump", {{ scale: 1, duration: 0.3, ease: "power2.inOut" }}, {f(S["hook"] + 1.48)});
+      tl.to("#bump", {{ scale: 1.035, duration: 0.07, ease: "power3.out" }}, {f(S["hook"] + 3.45)});
+      tl.to("#bump", {{ scale: 1, duration: 0.3, ease: "power2.out" }}, {f(S["hook"] + 3.52)});
       // B-roll: punch in on the cut, then a slow push.
 {chr(10).join(br_tl)}
       window.__timelines = window.__timelines || {{}};
