@@ -13,6 +13,9 @@ GRADE = html.escape(json.dumps(_grade, separators=(",", ":")), quote=True)
 # Background plate: same colour, no bloom (bloom on the bright sky washes the houses out).
 _grade_bg = json.loads(json.dumps(_grade)); _grade_bg["effects"]["bloom"] = 0
 GRADE_BG = html.escape(json.dumps(_grade_bg, separators=(",", ":")), quote=True)
+# LIGHT=1 python3 tools/build.py: quick draft build without the WebGL colour grade (much faster to render).
+if os.environ.get("LIGHT"):
+    GRADE = GRADE_BG = ""
 d = json.load(open(os.path.join(ROOT, "tools", "edit-timeline.json")))
 clips, TOTAL, caps, BROLL = d["clips"], d["total"], d["captions"], d.get("broll", [])
 
@@ -79,7 +82,7 @@ def build_index():
             f'        <video id="v{n:02d}" class="clip" src="assets/subject.webm" muted playsinline\n'
             f'          data-start="{f(c["start"])}" data-duration="{f(c["dur"])}" data-media-start="{f(c["src"])}"\n'
             f'          data-track-index="1" data-layout-allow-occlusion\n'
-            f'          data-color-grading="{GRADE}"\n'
+            f'          {f'data-color-grading="{GRADE}"' if GRADE else ""}\n'
             f'          style="z-index:{n}; transform: scale({SUBJECT_SCALE * c["zoom"]:.3f})"></video>  <!-- {html.escape(c["note"])} -->'
         )
         voice.append(
@@ -96,7 +99,7 @@ def build_index():
         brolls.append(
             f'        <div id="w-{b["id"]}" class="brw"><video id="br-{b["id"]}" class="clip" src="assets/broll/{b["id"]}.mp4" muted playsinline\n'
             f'          data-start="{f(b["start"])}" data-duration="{f(b["end"] - b["start"])}" data-media-start="0" data-track-index="3"\n'
-            f'          data-color-grading="{GRADE_BG}" style="transform: scale({sc}); transform-origin: {org}"></video></div>  <!-- {html.escape(b["note"])} -->'
+            f'          {f'data-color-grading="{GRADE_BG}"' if GRADE_BG else ""} style="transform: scale({sc}); transform-origin: {org}"></video></div>  <!-- {html.escape(b["note"])} -->'
         )
     br_tl = []
     for b in BROLL:
@@ -153,7 +156,7 @@ def build_index():
       <div id="bgwrap" data-layout-allow-overflow>
         <video id="bg" class="clip" src="assets/background.mp4" muted playsinline data-start="0"
           data-duration="{f(TOTAL)}" data-media-start="0" data-playback-rate="{BG_RATE}" data-track-index="0"
-          data-color-grading="{GRADE_BG}" style="z-index:0"></video>
+          {f'data-color-grading="{GRADE_BG}"' if GRADE_BG else ""} style="z-index:0"></video>
       </div>
       <div id="bump"><div id="cam" data-layout-allow-overflow>
 {chr(10).join(vids)}
