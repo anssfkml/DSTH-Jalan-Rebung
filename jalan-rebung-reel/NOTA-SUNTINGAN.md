@@ -34,6 +34,15 @@ Sumber: satu take selfie 44.8s (iPhone, potret). Hasil suntingan: **32.7s**.
 | 21.1–27.3 | Tanah + bilik | Lot dilukis ikut skala 19' × 108', chip tanah belakang 43 kaki, ikon 4 bilik / 3 bilik air |
 | 27.3–32.7 | CTA | BERMINAT?, butang Contact Saya, cop UNIT SANGAT TERHAD, tutup dengan thumbs up |
 
+## Audio + muka versi 4
+- **Bunyi construction dibuang**: `tools/denoise.py` — DeepFilterNet3 (had atenuasi 30 dB supaya suara tak jadi "dalam air"),
+  kemudian high-pass 85 Hz, kurang "mud" 280 Hz, tambah presence 3.2 kHz, kompresor ringan, loudnorm **-12 LUFS** (dulu -14).
+  Diukur: lantai noise turun ~12 dB, SNR suara 12 dB → 26 dB.
+- **Glow muka lebih**: `GLOW` 0.16 → 0.34 + `GLOW_LIFT` (kecerahan kulit) + sedikit warm. Hanya kawasan kulit muka.
+- **Gigi natural**: kuning dikurangkan lebih (0.62) tapi dikekalkan sedikit hangat (`TEETH_WARM_FLOOR`) dan had kecerahan
+  (`TEETH_L_CAP`) supaya tak jadi putih kertas.
+- Retouch dibuat semula dari video asal (`--alpha-from assets/subject.webm`): cutout/matte lama dipakai semula frame demi frame.
+
 ## Hook versi 3: tanah belakang 43'
 Hook baharu (0–2.76s): *"Tanah dia besar ya, tanah belakang 43 kaki."* dipindah ke depan.
 - 0–1.07: shot backyard (tangan tunjuk tanah belakang) + teks besar TANAH BELAKANG **43'** KAKI dari frame 0, cop BESAR! pada "besar".

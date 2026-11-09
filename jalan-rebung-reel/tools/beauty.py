@@ -4,6 +4,8 @@ the face only, (1) smooths skin with an edge-preserving filter while keeping tex
 outline. Everything outside the face is passed through untouched.
 
   python beauty.py IN.mp4 OUT.mp4 --model face_landmarker.task [--frames 0,300] [--preview DIR]
+  python beauty.py RAW.mp4 OUT.webm --model ... --alpha-from assets/subject.webm
+      (re-retouch the presenter from the raw take, keep the existing cutout's matte frame for frame)
 
 Needs: mediapipe, opencv-python-headless, numpy, ffmpeg on PATH.
 """
@@ -23,10 +25,14 @@ LIPS_INNER = [78, 95, 88, 178, 87, 14, 317, 402, 318, 324, 308, 415, 310, 311, 3
 
 # Strengths (kept natural on purpose)
 SMOOTH = 0.6      # share of the smoothed skin in the mix
-GLOW = 0.16       # soft screen glow on skin
-TEETH_YELLOW = 0.45  # fraction of b* (yellow) removed from teeth
-TEETH_EVEN = 0.45    # pull darker (greyish) teeth toward the brighter ones
-TEETH_LIFT = 7.0     # L* lift on teeth (0-255 scale)
+GLOW = 0.34       # soft screen glow on skin (v1 was 0.16; asked for more glow)
+GLOW_LIFT = 7.0   # extra L* on skin, radiance (0-255 scale)
+GLOW_WARM = 2.0   # nudge skin a touch warmer (b*) so the lift reads healthy, not grey
+TEETH_YELLOW = 0.62  # fraction of b* (yellow) removed from teeth
+TEETH_WARM_FLOOR = 131.0  # keep a hint of natural warmth: never push teeth b* below this (128 = neutral)
+TEETH_EVEN = 0.5     # pull darker (greyish) teeth toward the brighter ones
+TEETH_LIFT = 8.0     # L* lift on teeth (0-255 scale)
+TEETH_L_CAP = 232.0  # no paper-white teeth
 
 
 def poly(lm, idx, w, h, scale=1.0, cx=None, cy=None):
@@ -75,6 +81,10 @@ def process(frame, lm):
     blur = cv2.GaussianBlur(out, (0, 0), max(6, bw // 18))
     screen = 255 - (255 - out) * (255 - blur) / 255
     out = out * (1 - GLOW * mask) + screen * (GLOW * mask)
+    lab = cv2.cvtColor(np.clip(out, 0, 255).astype(np.uint8), cv2.COLOR_RGB2LAB).astype(np.float32)
+    lab[..., 0] += GLOW_LIFT * mask[..., 0]
+    lab[..., 2] += GLOW_WARM * mask[..., 0]
+    out = cv2.cvtColor(np.clip(lab, 0, 255).astype(np.uint8), cv2.COLOR_LAB2RGB).astype(np.float32)
 
     # ---- teeth: inside the inner-lip outline, bright + low-chroma pixels only ----
     mouth = np.zeros((ch, cw), np.uint8)
@@ -90,9 +100,9 @@ def process(frame, lm):
         if bright.size > 30:
             target = float(np.percentile(bright, 60))
             L[:] = L + np.maximum(target - L, 0) * TEETH_EVEN * tmask
-        B[:] = B - (B - 128) * TEETH_YELLOW * tmask
+        B[:] = np.where(B > TEETH_WARM_FLOOR, B - (B - TEETH_WARM_FLOOR) * TEETH_YELLOW * tmask * 1.0, B)
         A[:] = A - np.maximum(A - 128, 0) * 0.25 * tmask
-        L[:] = L + TEETH_LIFT * tmask
+        L[:] = np.minimum(L + TEETH_LIFT * tmask, np.maximum(L, TEETH_L_CAP))
         out = cv2.cvtColor(np.clip(lab, 0, 255).astype(np.uint8), cv2.COLOR_LAB2RGB).astype(np.float32)
 
     frame = frame.copy()
@@ -106,6 +116,7 @@ def main():
     ap.add_argument("--model", required=True)
     ap.add_argument("--frames", help="only these frame numbers, write PNG before/after to --preview")
     ap.add_argument("--preview")
+    ap.add_argument("--alpha-from", help="VP9+alpha cutout whose matte is reused; output becomes VP9+alpha WebM")
     a = ap.parse_args()
     W, H = 1080, 1920
     fps = 30
@@ -119,7 +130,15 @@ def main():
                           stdout=subprocess.PIPE)
     want = set(int(x) for x in a.frames.split(",")) if a.frames else None
     wr = None
-    if not want:
+    ard = None
+    if a.alpha_from and not want:
+        ard = subprocess.Popen(["ffmpeg", "-v", "error", "-c:v", "libvpx-vp9", "-i", a.alpha_from, "-f", "rawvideo",
+                                "-pix_fmt", "rgba", "-"], stdout=subprocess.PIPE)
+        wr = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}",
+                               "-r", str(fps), "-i", "-", "-c:v", "libvpx-vp9", "-pix_fmt", "yuva420p", "-crf", "30",
+                               "-b:v", "0", "-row-mt", "1", "-deadline", "good", "-cpu-used", "4", "-g", "15",
+                               "-auto-alt-ref", "0", "-metadata:s:v:0", "alpha_mode=1", a.out], stdin=subprocess.PIPE)
+    elif not want:
         wr = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
                                "-r", str(fps), "-i", "-", "-i", a.inp, "-map", "0:v", "-map", "1:a", "-c:v", "libx264",
                                "-preset", "medium", "-crf", "18", "-g", "15", "-keyint_min", "15", "-pix_fmt", "yuv420p",
@@ -143,6 +162,12 @@ def main():
                 cv2.imwrite(f"{a.preview}/f{n:05d}.png", cv2.cvtColor(np.hstack([fr, outf]), cv2.COLOR_RGB2BGR))
             if n >= max(want):
                 break
+        elif ard is not None:
+            abuf = ard.stdout.read(W * H * 4)
+            if len(abuf) < W * H * 4:
+                break
+            alpha = np.frombuffer(abuf, np.uint8).reshape(H, W, 4)[..., 3:]
+            wr.stdin.write(np.concatenate([outf, alpha], axis=2).tobytes())
         else:
             wr.stdin.write(outf.tobytes())
         n += 1
